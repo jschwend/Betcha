@@ -1,0 +1,64 @@
+<table width="75%" border="1" align="center">
+  <tr><th><b>School Name:</b></th><td><%=h @team.send('school_nm') %></td></tr>
+  <tr><th><b>Team Name:</b></th><td><%=h @team.send('team_nm') %></td></tr>
+  <tr><th><b>Abbreviation:</b></th><td><%=h @team.send('abbreviation') %></td></tr>
+  <tr><th><b>Conference:</b></th><td><%=h @team.conference.send('conference_nm') %></td></tr>
+  <tr><th><b>Record:</b></th><td><%= @team.getRecord.html_safe %></td></tr>
+  <tr><th><b>Record ATS:</b></th><td><%= @team.getRecordATS.html_safe %></td></tr>
+  <tr><th><b>Avg. Pts./Game (for-against):</b></th><td><%= @team.getPtsPerGame.html_safe %></td></tr>
+</table>
+<br>
+<table width="75%" border="1" align="center">
+  <tr>
+    <th align="center">Season</th>
+    <th align="center">Week</th>
+    <th align="center">Away Team</th>
+    <th align="center">Away Score</th>
+    <th align="center">Home Team</th>
+    <th align="center">Home Score</th>
+    <th colspan="3">Actions</th>
+  </tr>
+
+<% for game in @games %>
+  <tr>
+    <td align="center"><%=h game.send('season') %></td>
+    <td align="center"><%=h game.send('wk') %></td>
+    <td align="center">
+    	  <% if (game.away_team.getRank(game.season,game.wk) != "NR") %>
+	    	  (<%=game.away_team.getRank(game.season,game.wk)%>)
+		  <% end %>
+    	  <font color="<% if game.away_score.nil? or game.home_score.nil? or game.away_team_id != @team.id %>black<% else if game.away_score > game.home_score %>green<% else %>red<% end end %>">
+    	  <% if game.away_team_id != @team.id %>
+		     <%= link_to game.away_team.school_nm, :action => 'show', :id => game.away_team %>
+		  <% else %>
+		  	 <%=h game.away_team.send('school_nm') %>
+		  <% end %>
+		  </font>
+		  (<%=game.away_team.getMyRank(session[:season],session[:week],false)%>)
+		  </td>
+    <td align="center"><font color="<% if game.away_score.nil? or game.home_score.nil? or game.away_team_id != @team.id %>black<% else if game.away_score > game.home_score %>green<% else %>red<% end end %>"><%=h game.send('away_score') %></font></td>
+    <td align="center">
+    	  <% if (game.home_team.getRank(game.season,game.wk) != "NR") %>
+	    	  (<%=game.home_team.getRank(game.season,game.wk)%>)
+		  <% end %>
+    	  <font color="<% if game.away_score.nil? or game.home_score.nil? or game.home_team_id != @team.id %>black<% else if game.away_score > game.home_score %>red<% else %>green<% end end %>">
+    	  <% if game.home_team_id != @team.id %>
+		     <%= link_to game.home_team.school_nm, :action => 'show', :id => game.home_team %>
+		  <% else %>
+		  	 <%=h game.home_team.send('school_nm') %>
+		  <% end %>
+		  </font>
+		  (<%=game.home_team.getMyRank(session[:season],session[:week],false)%>)
+		  </td>
+    <td align="center"><font color="<% if game.away_score.nil? or game.home_score.nil? or game.home_team_id != @team.id %>black<% else if game.away_score > game.home_score %>red<% else %>green<% end end %>"><%=h game.send('home_score') %></font></td>
+    <td align="center"><%= link_to 'Show', :controller => 'games', :action => 'show', :id => game %></td>
+    <td align="center"><%= link_to 'Change', :controller => 'games', :action => 'edit', :id => game %></td>
+    <td align="center"><a href="/games/<%=game.id%>" data-confirm="Are you sure?" data-method="delete" rel="nofollow">Destroy</a></td>
+  </tr>
+<% end %>
+</table>
+
+<%= link_to 'Edit', :action => 'edit', :id => @team %> |
+<a href="javascript:history.back()">Back</a><br>
+<%= link_to 'Full History', {:controller => 'teams', :action => 'show', :id => @team, :disp => 'All'}, {:target => "_parent"}  %></td>
+

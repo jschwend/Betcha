@@ -1,0 +1,43 @@
+<%= form_for(@game) do |f| %>  
+  	<%= render "shared/error_messages", :target => @game %>  
+<table border="1" width="75%" align="center">
+  <tr>
+    <th align="center">Season</th>
+    <th align="center">Week</th>
+    <th align="center">Away Team</th>
+    <th align="center">Away Score</th>
+    <th align="center">Home Team</th>
+    <th align="center">Home Score</th>
+  </tr>
+    <td align="center"><%= text_field 'game', 'season', 'size' => "5", 'maxsize' => "4" %></td>
+    <td align="center"><%= text_field 'game', 'wk', 'size' => "3", 'maxsize' => "2" %></td>
+    <td align="center"><%= select("game", "away_team_id", @teams.collect{|t| [t.school_nm, t.team_id] }) %></td>
+    <td align="center"><%= text_field 'game', 'away_score'  %></td>
+    <td align="center"><%= select("game", "home_team_id", @teams.collect{|t| [t.school_nm, t.team_id] }) %></td>
+    <td align="center"><%= text_field 'game', 'home_score'  %></td>
+  </tr>
+</table>
+<table border="1" width="75%" align="center">
+  <tr>
+    <th align="center" colspan="3">Game Lines</th>
+  </tr>
+  <tr>
+    <th align="center">Sportsbook</th>
+    <th align="center">Home Spread</th>
+    <th align="center">Vig</th>
+  </tr>
+   <input type="hidden" name="game_lines_count" value="<%=h @game.game_lines.send('size') %>">
+<% a = 0
+   for gameLine in @game.game_lines %>
+   <input type="hidden" name="game_line<%= a %>[sportsbook_id]" value="<%=h gameLine.send('sportsbook_id') %>">
+   <tr>
+     <td align="center"><%=h gameLine.sportsbook.send('sportsbook_nm') %>
+     <td align="center"><input type="text" name="game_line<%= a %>[home_spread]" value="<%=h gameLine.send('home_spread') %>">
+     <td align="center"><input type="text" name="game_line<%= a %>[vig]" value="<%=h gameLine.send('vig') %>">
+   </tr>
+<%   a += 1
+   end %>
+</table>
+<!--[eoform:game]-->
+
+<% end %>  

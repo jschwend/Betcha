@@ -1,0 +1,13 @@
+<%= form_for(@rank) do |f| %>  
+  	<%= render "shared/error_messages", :target => @rank %>  
+<p><label for="rank_season">Season</label><br/>
+<%= text_field 'rank', 'season'  %></p>
+
+<p><label for="rank_wk">Wk</label><br/>
+<%= text_field 'rank', 'wk'  %></p>
+
+<p><label for="rank_rank">Rank</label><br/>
+<%= text_field 'rank', 'rank'  %></p>
+<!--[eoform:rank]-->
+
+<% end %>  

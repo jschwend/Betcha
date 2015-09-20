@@ -1,0 +1,11 @@
+<h1>Editing Game-Line</h1>
+
+<p><%=h @game_line.game.away_team.send('school_nm')%> <%=h @game_line.game.away_team.send('team_nm')%> at <%=h @game_line.game.home_team.send('school_nm')%> <%=h @game_line.game.home_team.send('team_nm')%></p>
+<p><%=h @game_line.sportsbook.send('sportsbook_nm')%></p>
+<%= form_tag :action => 'update', :id => @game_line do %>
+  <%= render :partial => 'form' %>
+  <%= submit_tag 'Edit' %>
+<% end %>
+
+<%= link_to 'Show', :action => 'show', :id => @game_line %> |
+<a href="javascript:history.back()">Back</a>

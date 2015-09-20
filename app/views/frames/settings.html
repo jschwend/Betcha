@@ -1,0 +1,13 @@
+<%= form_tag :action => 'settingsSave' do %>
+<table>
+  <tr>
+    <th><font size="-2">Season</font></th>
+    <th><font size="-2">Week</font></th>
+  </tr>
+  <tr>
+    <td align="center"><font size="-1"><input type="text" name="season" size="4" maxlength="4" value="<%=@season%>"></font></td>
+    <td align="center"><font size="-1"><input type="text" name="week" size="2" maxlength="2" value="<%=@week%>"></font></td>
+    <td align="center"><font size="-1"><%= submit_tag 'Set' %></font></td>
+  </tr>
+</table>
+<% end %>

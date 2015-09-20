@@ -1,0 +1,31 @@
+<table width="100%" border="0" align="left">
+  <tr>
+  <td>
+  <h1>Listing accounts</h1>
+
+<table border="1">
+  <tr>
+  <% for column in Account.content_columns %>
+    <th><%= column.human_name %></th>
+  <% end %>
+  </tr>
+  
+<% for account in @accounts %>
+  <tr>
+  <% for column in Account.content_columns %>
+    <td><%=h account.send(column.name) %></td>
+  <% end %>
+    <td><%= link_to 'Show', :action => 'show', :id => account %></td>
+    <td><%= link_to 'Edit', :action => 'edit', :id => account %></td>
+    <td><a href="/accounts/<%=account.id%>" data-confirm="Are you sure?" data-method="delete" rel="nofollow">Destroy</a>
+  </tr>
+<% end %>
+</table>
+</td>
+</tr>
+  <tr>
+  <td>
+<%= link_to 'New account', :action => 'new' %>
+</td>
+</tr>
+</table>

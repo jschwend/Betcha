@@ -1,0 +1,29 @@
+<table width="80%">
+  <tr>
+    <th colspan="3" align="center">Conferences</th>
+  </tr>
+<% i = 0 %>
+<% for conference in @conferences %> 
+<%   i = i + 1  %>
+<%   if i % 3 == 1 %>
+      <tr>
+         <td><font size="-2"><%= link_to conference.conference_nm, {:controller => 'conferences', :action => 'show', :id => conference}, {:target => "_parent"} %></font></td>
+<%   else if i % 3 == 2 %>
+         <td><font size="-2"><%= link_to conference.conference_nm, {:controller => 'conferences', :action => 'show', :id => conference}, {:target => "_parent"} %></font></td>
+<%   else if i % 3 == 0 %>
+         <td><font size="-2"><%= link_to conference.conference_nm, {:controller => 'conferences', :action => 'show', :id => conference}, {:target => "_parent"} %></font></td>
+      </tr>
+<%   end %>
+<%   end %>
+<%   end %>
+<% end %>
+<% if i % 3 == 1 %>
+       <td>&nbsp;</td>
+       <td>&nbsp;</td>
+    </tr>
+<% end %>
+<% if i % 3 == 2 %>
+       <td>&nbsp;</td>
+    </tr>
+<% end %>
+</table>

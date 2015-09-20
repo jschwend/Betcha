@@ -1,0 +1,252 @@
+<table width="90%" border="1" align="center">
+  <tr>
+  	<th>
+  		<b>Season:</b>
+  	</th>
+  	<td colspan="5">
+  		<%=h @game.send('season') %>
+  	</td>
+  </tr>
+  <tr>
+  	<th>
+  		<b>Week:</b>
+  	</th>
+  	<td colspan="5">
+  		<%=h @game.send('wk') %>
+  	</td>
+  </tr>
+  <tr>
+  	<th>
+  		<b>Away Team:</b>
+  	</th>
+  		<td>
+  			<%= link_to @game.away_team.school_nm + " " + @game.away_team.team_nm, {:controller => 'teams', :action => 'show', :id => @game.away_team}, {:target => "_parent"}  %>
+			<% if !@game.away_score.nil? and !@game.home_score.nil?%>
+				(<%=h @game.send('away_score') %>)
+			<% end %>
+			<br>
+	        Rank: <%=@game.away_team.getMyRank(@game.season,@game.wk,true) %>
+	        <br>
+	        vs: <%=@game.away_team.getAvgOppMyRank(@game.season,@game.wk)%>
+  		</td>
+     	<th align="center">
+     		Record / ATS
+     	</th>
+    	<td align="center">
+    		(<%=@game.away_team.getRecord.html_safe %>)&nbsp;(<%=@game.away_team.getRecordATS.html_safe %>)
+    	</td>
+     	<th align="center">
+     		Avg. Pts./Game (for-against)
+     	</th>
+    	<td align="center">
+    		S:<%=@game.away_team.getPtsPerGame.html_safe %>&nbsp;&nbsp;W<%=@game.wk-1%>:<%=@game.away_team.getPtsPerGameWk(@game.wk).html_safe %>
+    	</td>
+  	</tr>
+  	<tr>
+  		<th>
+  			<b>Home Team:</b>
+  		</th>
+  		<td>
+  			<%= link_to @game.home_team.school_nm + " " + @game.home_team.team_nm, {:controller => 'teams', :action => 'show', :id => @game.home_team}, {:target => "_parent"}  %>
+			<% if !@game.away_score.nil? and !@game.home_score.nil?%>
+				(<%=h @game.send('home_score') %>)
+			<% end %>
+			<br>
+	        Rank: <%=@game.home_team.getMyRank(@game.season,@game.wk,true) %>
+	        <br>
+	        vs: <%=@game.home_team.getAvgOppMyRank(@game.season,@game.wk)%>
+  		</td>
+     	<th align="center">
+     		Record / ATS
+     	</th>
+    	<td align="center">
+    		(<%=@game.home_team.getRecord.html_safe %>)&nbsp;(<%=@game.home_team.getRecordATS.html_safe %>)
+    	</td>
+     	<th align="center">
+     		Avg. Pts./Game (for-against)
+     	</th>
+    	<td align="center">
+    		S:<%=@game.home_team.getPtsPerGame.html_safe %>&nbsp;&nbsp;W<%=@game.wk-1%>:<%=@game.home_team.getPtsPerGameWk(@game.wk).html_safe %>
+    	</td>
+  	</tr>
+  <tr>
+  	<th>
+  		<b>Likely:</b>
+  	</th>
+  	<td colspan="5">
+  		<% if @game.home_team.getAvgPtsFor(@game.wk) != 0.0 and 
+  		      @game.away_team.getAvgPtsFor(@game.wk) != 0.0 and 
+  		      @game.home_team.getAvgPtsAgainst(@game.wk) != 0.0 and 
+  		      @game.away_team.getAvgPtsAgainst(@game.wk) != 0.0 %>
+  				O/U: <%=@game.getLikelyTotal %> (Averaging prior <%=@game.home_team.getWeeksToAverage%> weeks)
+  				<br>#1: <%=@game.getLikelyAwayScore %>-<%=@game.getLikelyHomeScore %> TOT: <%=@game.getLikelyAwayScore + @game.getLikelyHomeScore %> SPREAD: <%=@game.getLikelySpread1%> (AVERAGED) 
+  				<br>#2: <%=@game.away_team.getAvgPtsFor(@game.wk)%>-<%=@game.home_team.getAvgPtsFor(@game.wk)%> TOT: <%=@game.away_team.getAvgPtsFor(@game.wk) + @game.home_team.getAvgPtsFor(@game.wk)%> SPREAD: <%=@game.getLikelySpread2%> (OFFENSE) 
+  				<br>#3: <%=@game.home_team.getAvgPtsAgainst(@game.wk)%>-<%=@game.away_team.getAvgPtsAgainst(@game.wk)%> TOT: <%=@game.home_team.getAvgPtsAgainst(@game.wk) + @game.away_team.getAvgPtsAgainst(@game.wk)%> SPREAD: <%=@game.getLikelySpread3%> (DEFENSE) 
+		<% 		if !@game.away_score.nil? and !@game.home_score.nil?%>
+    		  		<br><font color="magenta">Actuals: Total: 
+    	      		<%= @game.home_score + @game.away_score %> Spread: <%= @game.away_score - @game.home_score%></font>
+    	<% 		end %> 
+    	<%		if !@game.game_lines.empty?  and 
+                    @game.game_lines[0].over_under > 0.0 %>
+    	<%			if @game.getLikelyTotal + 5.0 < @game.getLatestOU('')and 
+    	               @game.away_team.getAvgPtsFor(@game.wk) + @game.home_team.getAvgPtsFor(@game.wk) < @game.getLatestOU('')and
+    	               @game.home_team.getAvgPtsAgainst(@game.wk) + @game.away_team.getAvgPtsAgainst(@game.wk) < @game.getLatestOU('') %>
+	    		  		<br><font color="blue">Play the Under (<%=@game.getLatestOU('')%>)</font>
+	    		  		<%= link_to "$", {:controller => 'wagers', :action => 'createAuto', :wager_game_line_id => @game.getLatestOU('id'), :wager_team => 'Under'}, {:target => "_parent"}  %>
+<%						if !@game.home_score.nil? and !@game.away_score.nil? %>
+							&nbsp;
+<%							if @game.home_score + @game.away_score < @game.getLatestOU('')%>
+	    						<font color="green">Won</font>
+<%                  		end %> 
+<%							if @game.home_score + @game.away_score > @game.getLatestOU('')%>
+	    						<font color="red">Lost</font>
+<%                  		end %> 
+<%							if @game.home_score + @game.away_score == @game.getLatestOU('')%>
+	    						<font color="magenta">Push</font>
+<%    						end %> 
+<%   	 				end %> 
+   	 	<%    		end %> 
+    	<%			if @game.getLikelyTotal - 5.0 > @game.getLatestOU('')  and 
+    	               @game.away_team.getAvgPtsFor(@game.wk) + @game.home_team.getAvgPtsFor(@game.wk) > @game.getLatestOU('') and
+    	               @game.home_team.getAvgPtsAgainst(@game.wk) + @game.away_team.getAvgPtsAgainst(@game.wk) > @game.getLatestOU('')  %>
+	    		  		<br><font color="blue">Play the Over (<%=@game.getLatestOU('') %>)</font>
+	    				<%= link_to "$", {:controller => 'wagers', :action => 'createAuto', :wager_game_line_id => @game.getLatestOU('id'), :wager_team => 'Over'}, {:target => "_parent"}  %>
+<%						if !@game.home_score.nil? and !@game.away_score.nil? %>
+							&nbsp;
+<%							if @game.home_score + @game.away_score > @game.getLatestOU('') %>
+	    						<font color="green">Won</font>
+<%                  		end %> 
+<%							if @game.home_score + @game.away_score < @game.getLatestOU('') %>
+	    						<font color="red">Lost</font>
+<%                  		end %> 
+<%							if @game.home_score + @game.away_score == @game.getLatestOU('') %>
+	    						<font color="magenta">Push</font>
+<%    						end %> 
+<%   	 				end %> 
+   	 	<%    		end %> 
+    	<% 		end 
+				if !@game.game_lines.empty?  and 
+                   !@game.game_lines[0].home_spread.nil?
+ 					if @game.getLikelySpread1 + 7.0 < @game.getLatestSpread('') and 
+               		   @game.getLikelySpread2 + 7.0 < @game.getLatestSpread('') and 
+              		   @game.getLikelySpread3 + 7.0 < @game.getLatestSpread('') %>
+ 		  				<br><font color="blue">Take Home (<%=@game.getLatestSpread('') %>)</font>
+	    				<%= link_to "$", {:controller => 'wagers', :action => 'createAuto', :wager_game_line_id => @game.getLatestSpread('id'), :wager_team => 'Home'}, {:target => "_parent"}  %>
+<%						if !@game.home_score.nil? and !@game.away_score.nil? %>
+<%							if @game.home_score + @game.getLatestSpread('') > @game.away_score %>
+	    						<font color="green">Won</font>
+<%                  		end %> 
+<%							if @game.home_score + @game.getLatestSpread('') < @game.away_score %>
+	    						<font color="red">Lost</font>
+<%                  		end %>
+<%							if @game.home_score + @game.getLatestSpread('') == @game.away_score %>
+	    						<font color="magenta">Push</font>
+<%    						end %> 
+<%   	 				end %> 
+<%    			    end
+					if @game.getLikelySpread1 - 10.0 > @game.getLatestSpread('') and 
+                   	   @game.getLikelySpread2 - 10.0 > @game.getLatestSpread('') and 
+                       @game.getLikelySpread3 - 10.0 > @game.getLatestSpread('') %>
+ 		  		        <br><font color="blue">Take Away (<%=@game.getLatestSpread('') %>)</font>
+	    				<%= link_to "$", {:controller => 'wagers', :action => 'createAuto', :wager_game_line_id => @game.getLatestSpread('id'), :wager_team => 'Away'}, {:target => "_parent"}  %>
+<%						if !@game.home_score.nil? and !@game.away_score.nil? %>
+<%							if @game.home_score + @game.getLatestSpread('') < @game.away_score %>
+	    						<font color="green">Won</font>
+<%                  		end %> 
+<%							if @game.home_score + @game.getLatestSpread('') > @game.away_score %>
+	    						<font color="red">Lost</font>
+<%                  		end %>
+<%							if @game.home_score + @game.getLatestSpread('') == @game.away_score %>
+	    						<font color="magenta">Push</font>
+<%    						end %> 
+<%   	 				end %> 
+<%    		        end
+                end 
+		 end %> 
+  	</td>
+  </tr>
+</table>
+<br>
+<table width="75%" border="1" align="center">
+  <tr>
+    <th align="center">Sportsbook</th>
+    <th align="center">Spread</th>
+    <th align="center">O/U</th>
+    <th align="center">Vig</th>
+    <th align="center">Projection</th>
+	<% if !@game.away_score.nil? and !@game.home_score.nil?%>
+    <th align="center">Result</th>
+	<% end %>
+    <th align="center">Loaded</th>
+    <th colspan="3">Actions</th>
+  </tr>
+
+<% for gameLine in @game.game_lines %>
+  <tr>
+    <td align="center"><%=h gameLine.sportsbook.send('sportsbook_nm') %></td>
+    <td align="center"><%=h gameLine.send('home_spread') %></td>
+    <td align="center"><%=h gameLine.send('over_under') %></td>
+    <td align="center"><%=h gameLine.send('vig') %></td>
+    <td align="center">
+   	<% if gameLine.home_spread.nil? or gameLine.over_under.nil? %> 
+	      &nbsp;
+    <% else %> 
+	      <%=gameLine.getProjection %>
+    <% end %> 
+    </td>
+	<% if !@game.away_score.nil? and !@game.home_score.nil?%>
+    <td align="center">
+    	<% if gameLine.home_spread < 0 
+              if @game.home_score + gameLine.home_spread > @game.away_score %>
+			  	<font color="green"><%=h @game.home_team.send('school_nm') %> Covered</font>
+              <% else 
+                   if @game.home_score + gameLine.home_spread < @game.away_score %>
+			  	      <font color="red"><%=h @game.home_team.send('school_nm') %> Failed</font>
+                   <% else %>
+			  	      <font color="blue">Push</font>
+			       <% end 
+              end 
+           else 
+              if gameLine.home_spread > 0 
+                 if @game.home_score + gameLine.home_spread > @game.away_score %>
+			  	   <font color="red"><%=h @game.away_team.send('school_nm') %> Failed</font>
+                 <% else
+                       if @game.home_score + gameLine.home_spread < @game.away_score %>
+			  	         <font color="green"><%=h @game.away_team.send('school_nm') %> Covered</font>
+                       <% else %>
+			     	     <font color="blue">Push</font>
+			           <% end 
+                 end 
+              else %>
+	     	     <font color="blue">No Spread</font>
+	<%        end
+           end %>
+    	<% if gameLine.over_under > 0.0 %>
+    		  &nbsp;&nbsp;/&nbsp;&nbsp;<font color="magenta">
+        <%    if @game.home_score + @game.away_score > gameLine.over_under %>
+	     	     Over
+    	<%    end
+    	      if @game.home_score + @game.away_score < gameLine.over_under %> 
+	     	     Under
+    	<%    end 
+    	      if @game.home_score + @game.away_score == gameLine.over_under %> 
+	     	     Even
+    	<%    end %> 
+    	      &nbsp;(<%= @game.home_score + @game.away_score %>)</font>
+    	<% end %> 
+    </td>
+    <% end %>
+    <td align="center"><%=h gameLine.send('load_dt').strftime('%m/%d/%Y %H:%M') %></td>
+    <td align="center"><%= link_to 'Show', :controller => 'game_lines', :action => 'show', :id => gameLine %></td>
+    <td align="center"><%= link_to 'Change', :controller => 'game_lines', :action => 'edit', :id => gameLine %></td>
+    <td align="center"><a href="/game_lines/<%=gameLine.id%>" data-confirm="Are you sure?" data-method="delete" rel="nofollow">Destroy</a></td>
+  </tr>
+<% end %>
+</table>
+
+<%= link_to 'Edit', :action => 'edit', :id => @game %> |
+<a href="javascript:history.back()">Back</a>
+<% if !@nextGame.nil? %>
+ |
+<%= link_to 'Next Game', :action => 'show', :id => @nextGame.game_id %>
+<% end %>

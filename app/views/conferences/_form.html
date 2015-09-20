@@ -1,0 +1,7 @@
+<%= form_for(@conference) do |f| %>  
+  	<%= render "shared/error_messages", :target => @conference %>  
+	<p><label for="conference_conference_nm">Conference nm</label><br/>
+	<%= text_field 'conference', 'conference_nm'  %></p>
+	  <%= submit_tag "Create new conference" %>
+<% end %>  
+

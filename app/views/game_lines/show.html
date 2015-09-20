@@ -1,0 +1,8 @@
+<% for column in GameLine.content_columns %>
+<p>
+  <b><%= column.human_name %>:</b> <%=h @game_line.send(column.name) %>
+</p>
+<% end %>
+
+<%= link_to 'Edit', :action => 'edit', :id => @game_line %> |
+<a href="javascript:history.back()">Back</a>

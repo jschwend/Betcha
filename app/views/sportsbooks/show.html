@@ -1,0 +1,8 @@
+<% for column in Sportsbook.content_columns %>
+<p>
+  <b><%= column.human_name %>:</b> <%=h @sportsbook.send(column.name) %>
+</p>
+<% end %>
+
+<%= link_to 'Edit', :action => 'edit', :id => @sportsbook %> |
+<a href="javascript:history.back()">Back</a>

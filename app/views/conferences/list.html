@@ -1,0 +1,31 @@
+<table width="100%" border="0" align="left">
+  <tr>
+  <td>
+  <h1>Listing conferences</h1>
+
+<table>
+  <tr>
+  <% for column in Conference.content_columns %>
+    <th><%= column.human_name %></th>
+  <% end %>
+  </tr>
+  
+<% for conference in @conferences %>
+  <tr>
+  <% for column in Conference.content_columns %>
+    <td><%=h conference.send(column.name) %></td>
+  <% end %>
+    <td><%= link_to 'Show', :action => 'show', :id => conference %></td>
+    <td><%= link_to 'Edit', :action => 'edit', :id => conference %></td>
+    <td><a href="/conferences/<%=conference.id%>" data-confirm="Are you sure?" data-method="delete" rel="nofollow">Destroy</a>
+  </tr>
+<% end %>
+</table>
+</td>
+</tr>
+  <tr>
+  <td>
+<%= link_to 'New conference', :action => 'new' %>
+</td>
+</tr>
+</table>

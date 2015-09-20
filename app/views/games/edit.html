@@ -1,0 +1,9 @@
+<h1>Editing game</h1>
+
+<%= form_tag :action => 'update', :id => @game do %>
+  <%= render :partial => 'editform' %>
+  <%= submit_tag 'Edit' %>
+<% end %>
+
+<%= link_to 'Show', :action => 'show', :id => @game %> |
+<a href="javascript:history.back()">Back</a>

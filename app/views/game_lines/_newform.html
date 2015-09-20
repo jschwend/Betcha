@@ -1,0 +1,20 @@
+<%= form_for(@game_line) do |f| %>  
+  	<%= render "shared/error_messages", :target => @game_line %> 
+<table border="1" width="75%" align="center">
+  <tr>
+    <th align="center">Game</th>
+    <th align="center">Book</th>
+    <th align="center">Home Spread</th>
+    <th align="center">O/U</th>
+    <th align="center">Vig</th>
+  </tr>
+    <td align="center"><%= select("game_line", "game_id", @games.collect{|g| [g.away_team.school_nm + " at " + g.home_team.school_nm, g.game_id] }) %></td>
+    <td align="center"><%= select("game_line", "sportsbook_id", @sportsbooks.collect{|b| [b.sportsbook_nm, b.sportsbook_id] }) %></td>
+    <td align="center"><%= text_field 'game_line', 'home_spread', 'size' => "5", 'maxsize' => "4" %></td>
+    <td align="center"><%= text_field 'game_line', 'over_under', 'size' => "5", 'maxsize' => "4" %></td>
+    <td align="center"><%= text_field 'game_line', 'vig', 'size' => "5", 'maxsize' => "4" %></td>
+  </tr>
+</table>
+<!--[eoform:game_line]-->
+
+<% end %>  

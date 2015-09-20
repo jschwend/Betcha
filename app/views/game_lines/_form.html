@@ -1,0 +1,13 @@
+<%= form_for(@game_line) do |f| %>  
+  	<%= render "shared/error_messages", :target => @game_line %>  
+<p><label for="game_line_home_spread">Home spread</label><br/>
+<%= text_field 'game_line', 'home_spread'  %></p>
+
+<p><label for="game_line_over_under">Over/Under</label><br/>
+<%= text_field 'game_line', 'over_under'  %></p>
+
+<p><label for="game_line_vig">Vig</label><br/>
+<%= text_field 'game_line', 'vig'  %></p>
+<!--[eoform:game_line]-->
+
+<% end %>  

@@ -1,0 +1,23 @@
+<table>
+  <tr>
+    <th colspan="2">
+       Week <%=h @week %> Rank
+       <font size="-2">
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	   <% if @week > 1 %>
+	       <%= link_to "prev", {:controller => 'frames', :action => 'top25', :wk => @week - 1} %>
+	       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	   <% end %>	
+	   <% if @week < 15 %>
+	       <%= link_to "next", {:controller => 'frames', :action => 'top25', :wk => @week + 1} %>
+	   <% end %>	
+	   </font>
+    </th>
+  </tr>
+<% for rank in @ranks %>
+  <tr>
+    <td><font size="-2"><%=h rank.send('rank') %></font></td>
+    <td><font size="-2"><%= link_to rank.team.school_nm + ' ' + rank.team.team_nm, {:controller => 'teams', :action => 'show', :id => rank.team}, {:target => "_parent"}  %>  (<%= rank.team.getRecord.html_safe %>)</font></td>
+  </tr>
+<% end %>
+</table>

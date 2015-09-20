@@ -1,0 +1,25 @@
+<%= form_for(@wager) do |f| %>  
+  	<%= render "shared/error_messages", :target => @wager %>  
+<% @wager.game_line_id = :wager_game_line_id %>
+<!--[form:wager]-->
+<table border="1" width="75%" align="center">
+  <tr>
+    <th align="center">Game-Line</th>
+    <th align="center">Account</th>
+    <th align="center">Team</th>
+    <th align="center">Amount</th>
+  </tr>
+    <td align="center">
+    	<%= select("wager", 
+    	           "game_line_id", 
+    	           @game_lines.collect{|g| [g.game.away_team.school_nm + " at " + g.game.home_team.school_nm + " (" + g.sportsbook.sportsbook_nm + ") " + g.home_spread.to_s + "/" + g.over_under.to_s + "/" + g.vig.to_s, 
+    	           g.game_line_id] }) %>
+    </td>
+    <td align="center"><%= select("wager", "account_id", @accounts.collect{|a| [a.account_nm, a.account_id] }) %></td>
+    <td align="center"><%= select("wager", "team", {'Home','Home','Away','Away','Over','Over','Under','Under'}) %></td>
+    <td align="center"><%= text_field 'wager', 'amount', 'size' => "5", 'maxsize' => "4" %></td>
+  </tr>
+</table>
+<!--[eoform:wager]-->
+
+<% end %>  

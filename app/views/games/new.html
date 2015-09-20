@@ -1,0 +1,8 @@
+<h1>New game</h1>
+
+<%= form_tag :action => 'create' do %>
+  <%= render :partial => 'newform' %>
+  <%= submit_tag "Create" %>
+<% end %>
+
+<a href="javascript:history.back()">Back</a>

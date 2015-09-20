@@ -1,0 +1,55 @@
+<!DOCTYPE html>  
+<html>  
+<head>
+  <%= javascript_include_tag 'jquery', 'rails', 'application' %>  
+  <%= csrf_meta_tag %>  
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title>Betcha NCAA -  <%= controller.controller_name %> - <%= controller.action_name %></title>
+  <%= stylesheet_link_tag 'scaffold' %>
+</head>
+<body>
+<h1>Betcha - <font color='blue'>NCAA</font> Betting System</h1>
+<table width="90%" border="1" cellpadding="0" cellspacing="0">
+  <tr>
+    <td align="center"><%= link_to "Conferences", :controller => "conferences", :action => "index" %></td>
+    <td align="center"><%= link_to "Teams", :controller => "teams", :action => "index" %></td>
+    <td align="center"><%= link_to "Rankings", :controller => "ranks", :action => "index" %></td>
+    <td align="center"><%= link_to "Games", :controller => "games", :action => "index" %></td>
+    <td align="center"><%= link_to "Sportsbooks", :controller => "sportsbooks", :action => "index" %></td>
+    <td align="center"><%= link_to "Game-Lines", :controller => "game_lines", :action => "index" %></td>
+    <td align="center"><%= link_to "Accounts", :controller => "accounts", :action => "index" %></td>
+    <td align="center"><%= link_to "Wagers", :controller => "wagers", :action => "index" %></td>
+    <td align="center"><a href="http://localhost:8080/betchaCollector/controlPanel.jack?season=<%=session[:season].to_s%>&week=<%=session[:week].to_s%>">ControlPanel</a></td>
+  </tr>
+</table>
+
+<p style="color: green"><%= flash[:notice] %></p>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+  	<td width="17%" height="75">
+        <iframe src="/frames/settings" width="100%" height="75"></iframe>
+	</td>
+    <td rowspan="4" width="2%">&nbsp;</td>
+    <td rowspan="4" width="80%" valign="top">
+    	<%= yield  %>
+	</td>
+  </tr>
+  <tr>
+  	<td width="17%" height="290">
+        <iframe src="/frames/confList" width="100%" height="290"></iframe>
+	</td>
+  </tr>
+  <tr>
+  	<td width="17%" height="470">
+      <iframe src="/frames/top25"  width="100%" height="470"></iframe>
+	</td>
+  </tr>	
+  <tr>
+  	<td width="17%">&nbsp;
+	</td>
+  </tr>	
+</table>
+
+</body>
+</html>

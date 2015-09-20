@@ -1,0 +1,32 @@
+<table width="75%" border="1" align="center">
+  <tr><th><b>Conference Name:</b></th><td><%=h @conference.send('conference_nm') %></td></tr>
+</table>
+<br>
+<table width="75%" border="1" align="center">
+  <tr>
+    <th align="center">Rank (week <%=h session[:week] %>)</th>
+    <th align="center">School Name</th>
+    <th align="center">Team Name</th>
+    <th align="center">Abbreviation</th>
+    <th align="center">Record</th>
+    <th align="center">Record ATS</th>
+    <th colspan="3">Actions</th>
+  </tr>
+
+<% for team in @teams %>
+  <tr>
+    <td align="center"><%=h team.getRank(Integer(session[:season]),Integer(session[:week])) %></td>
+    <td align="center"><%=h team.send('school_nm') %></td>
+    <td align="center"><%=h team.send('team_nm') %></td>
+    <td align="center"><%=h team.send('abbreviation') %></td>
+    <td align="center"><%= team.send('getRecord') %></td>
+    <td align="center"><%= team.send('getRecordATS') %></td>
+    <td align="center"><%= link_to 'Show', :controller => 'teams', :action => 'show', :id => team %></td>
+    <td align="center"><%= link_to 'Change', :controller => 'teams', :action => 'edit', :id => team %></td>
+    <td align="center"><a href="/teams/<%=team.id%>" data-confirm="Are you sure?" data-method="delete" rel="nofollow">Destroy</a></td>
+  </tr>
+<% end %>
+</table>
+
+<%= link_to 'Edit', :action => 'edit', :id => @conference %> |
+<a href="javascript:history.back()">Back</a>

@@ -1,0 +1,41 @@
+<table width="100%" border="0" align="left">
+  <tr>
+  <td>
+  <h1>Teams Listing</h1>
+
+<%= link_to 'Add New Team', :action => 'new' %><br/>
+</td>
+</tr>
+  <tr>
+  <td>
+<table width="88%" border="1" align="left">
+  <tr>
+    <th align="center">School Name</th>
+    <th align="center">Team Name</th>
+    <th align="center">Conference</th>
+    <th align="center">Abbreviation</th>
+    <th align="center">Pts. (F/A/R)</th>
+    <th colspan="3">&nbsp;</th>
+  </tr>
+  
+<% for team in @teams %>
+  <tr>
+    <td align="center"><%=h team.send('school_nm') %></td>
+    <td align="center"><%=h team.send('team_nm') %></td>
+    <td align="center"><%=h team.conference.send('conference_nm') %></td>
+    <td align="center"><%=h team.send('abbreviation') %></td>
+    <td align="center"><%=h team.AvgPtsFor()%>/<%=h team.AvgPtsAgainst() %></td>
+    <td align="center"><%= link_to 'Show', :action => 'show', :id => team %></td>
+    <td align="center"><%= link_to 'Change', :action => 'edit', :id => team %></td>
+    <td align="center"><a href="/teams/<%=team.id%>" data-confirm="Are you sure?" data-method="delete" rel="nofollow">Destroy</a></td>
+  </tr>
+<% end %>
+</table>
+</td>
+</tr>
+  <tr>
+  <td>
+<%= link_to 'Add New Team', :action => 'new' %>
+</td>
+</tr>
+</table>

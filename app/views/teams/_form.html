@@ -1,0 +1,18 @@
+<%= form_for(@team) do |f| %>  
+  	<%= render "shared/error_messages", :target => @team %>  
+<table border="1" width="75%" align="center">
+  <tr>
+    <th align="center">School Name</th>
+    <th align="center">Team Name</th>
+    <th align="center">Abbreviation</th>
+    <th align="center">Conference</th>
+  </tr>
+    <td align="center"><%= text_field 'team', 'school_nm'  %></td>
+    <td align="center"><%= text_field 'team', 'team_nm'  %></td>
+    <td align="center"><%= text_field 'team', 'abbreviation'  %></td>
+    <td align="center"><%= select("team", "conference_id", @conferences.collect{|c| [c.conference_nm, c.conference_id] }) %></td>
+  </tr>
+</table>
+<!--[eoform:team]-->
+
+<% end %>  

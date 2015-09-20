@@ -1,0 +1,59 @@
+<table width="100%" border="0" align="left">
+  <tr>
+  <td>
+  
+  <h2>Game Line Listing</h2>
+
+<%= link_to 'Add New Game-Line', :action => 'new' %><br/>
+</td>
+</tr>
+  <tr>
+  <td>
+<table width="88%" border="1" align="left">
+  <tr>
+    <th align="center">Season</th>
+    <th align="center">Week</th>
+    <th align="center">Game Id</th>
+    <th align="center">Teams</th>
+    <th align="center">Sportsbook</th>
+    <th align="center">Spread</th>
+    <th align="center">O/U</th>
+    <th align="center">Vig</th>
+    <th align="center">Loaded</th>
+    <th colspan="3" align="center">Actions</th>
+  </tr>
+  
+<% prevGame = 0 %>
+<% for game_line in @game_lines %>
+<% if game_line.game_id == prevGame %>
+<%    tag = '' %>
+<%    tagEnd = '' %>
+<% else %>
+<%    tag = '<b>'.html_safe %>
+<%    tagEnd = '</b>'.html_safe %>
+<% end %>
+<% prevGame = game_line.game_id %>
+  <tr>
+    <td align="center"><%= tag %><%=h game_line.game.send('season') %><%= tagEnd %></td>
+    <td align="center"><%= tag %><%=h game_line.game.send('wk') %><%= tagEnd %></td>
+    <td align="center"><%= link_to game_line.game.send('id'), {:controller => 'games', :action => 'show', :id => game_line.game_id}, {:target => "_parent"}  %></td>
+    <td align="center"><%= tag %><%=h game_line.game.away_team.send('school_nm') %> at <%=h game_line.game.home_team.send('school_nm') %><%= tagEnd %></td>
+    <td align="center"><%= tag %><%=h game_line.sportsbook.send('sportsbook_nm') %><%= tagEnd %></td>
+    <td align="center"><%= tag %><%=h game_line.send('home_spread') %><%= tagEnd %></td>
+    <td align="center"><%= tag %><%=h game_line.send('over_under') %><%= tagEnd %></td>
+    <td align="center"><%= tag %><%=h game_line.send('vig') %><%= tagEnd %></td>
+    <td align="center"><%= tag %><%=h game_line.send('load_dt').strftime('%m/%d/%Y %H:%M') %><%= tagEnd %></td>
+    <td align="center"><%= link_to 'Show', :action => 'show', :id => game_line %></td>
+    <td align="center"><%= link_to 'Edit', :action => 'edit', :id => game_line %></td>
+    <td align="center"><a href="/game_lines/<%=game_line.id%>" data-confirm="Are you sure?" data-method="delete" rel="nofollow">Destroy</a></td>
+  </tr>
+<% end %>
+</table>
+</td>
+</tr>
+  <tr>
+  <td>
+<%= link_to 'Add New Game_Line', :action => 'new' %>
+</td>
+</tr>
+</table>

@@ -1,0 +1,7 @@
+<%= form_for(@sportsbook) do |f| %>  
+  	<%= render "shared/error_messages", :target => @sportsbook %>  
+<p><label for="sportsbook_sportsbook_nm">Sportsbook nm</label><br/>
+<%= text_field 'sportsbook', 'sportsbook_nm'  %></p>
+<!--[eoform:sportsbook]-->
+
+<% end %>  

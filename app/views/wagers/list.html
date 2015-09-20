@@ -1,0 +1,165 @@
+<table width="100%" border="0" align="left">
+  <tr>
+  <td>
+  <h1>Wager Listing</h1>
+
+<% won = 0
+   lost = 0  
+   push = 0 
+   cash = 0.0 
+   ouWon = 0
+   ouLost = 0
+   ouPush = 0
+   ouCash = 0.0 %> 
+
+<%= link_to 'Add New Wager', :action => 'new' %><br/>
+</td>
+</tr>
+  <tr>
+  <td>
+<table width="88%" border="1" align="left">
+  <tr>
+    <th align="center">Season</th>
+    <th align="center">Week</th>
+    <th align="center">Away Team</th>
+    <th align="center">Away Score</th>
+    <th align="center">Home Team</th>
+    <th align="center">Home Score</th>
+    <th align="center">Sportsbook</th>
+    <th align="center">Spread</th>
+    <th align="center">O/U</th>
+    <th align="center">Vig</th>
+    <th align="center">Account</th>
+    <th align="center">Wager</th>
+    <th align="center">Amount</th>
+    <th align="center">Result</th>
+    <th colspan="3">&nbsp;</th>
+  </tr>
+  
+<% for wager in @wagers %>
+  <tr>
+    <td align="center"><%=h wager.game_line.game.send('season') %></td>
+    <td align="center"><%=h wager.game_line.game.send('wk') %></td>
+    <td align="center"><%=h wager.game_line.game.away_team.send('school_nm') %></td>
+    <td align="center"><%=h wager.game_line.game.send('away_score') %></td>
+    <td align="center"><%=h wager.game_line.game.home_team.send('school_nm') %></td>
+    <td align="center"><%=h wager.game_line.game.send('home_score') %></td>
+    <td align="center"><%=h wager.game_line.sportsbook.send('sportsbook_nm') %></td>
+    <td align="center"><%=h wager.game_line.send('home_spread') %></td>
+    <td align="center"><%=h wager.game_line.send('over_under') %></td>
+    <td align="center"><%=h wager.game_line.send('vig') %></td>
+    <td align="center"><%=h wager.account.send('account_nm') %></td>
+    <th align="center"><%=h wager.send('team') %></th>
+    <td align="center"><%=h wager.send('amount') %></td>
+    <td align="center">&nbsp;
+<%	if wager.game_line.game.away_score.nil? or wager.game_line.game.home_score.nil? %>
+		Future
+<%  else
+      if wager.team == 'Under'
+         if wager.game_line.game.away_score + wager.game_line.game.home_score > wager.game_line.over_under %>
+            <font color='Red'>Loser</font>
+<%          ouLost = ouLost + 1
+			ouCash = ouCash + (wager.amount * (wager.game_line.vig / 100.0))
+         else
+  	       if wager.game_line.game.away_score + wager.game_line.game.home_score < wager.game_line.over_under %>
+   	          <font color='Green'>Winner</font>
+<% 	          ouWon = ouWon + 1
+    		  ouCash = ouCash + wager.amount
+           else %>
+   	          <font color='Blue'>Push</font>
+<% 	          push = push + 1
+    	   end
+         end
+      end
+      if wager.team == 'Over'
+         if wager.game_line.game.away_score + wager.game_line.game.home_score < wager.game_line.over_under %>
+            <font color='Red'>Loser</font>
+<%          ouLost = ouLost + 1
+			ouCash = ouCash + (wager.amount * (wager.game_line.vig / 100.0))
+         else
+  	       if wager.game_line.game.away_score + wager.game_line.game.home_score > wager.game_line.over_under %>
+   	          <font color='Green'>Winner</font>
+<% 	          ouWon = ouWon + 1
+			  ouCash = ouCash + wager.amount
+           else %>
+   	          <font color='Blue'>Push</font>
+<% 	          push = push + 1
+    	   end
+         end
+      end
+      if wager.team == 'Home'
+         if wager.game_line.game.home_score + wager.game_line.home_spread < wager.game_line.game.away_score %>
+            <font color='Red'>Loser</font>
+<%          lost = lost + 1
+			cash = cash + (wager.amount * (wager.game_line.vig / 100.0))
+         else
+	       if wager.game_line.game.home_score + wager.game_line.home_spread > wager.game_line.game.away_score %>
+   	          <font color='Green'>Winner</font>
+<% 	          won = won + 1
+			  cash = cash + wager.amount
+           else %>
+   	          <font color='Blue'>Push</font>
+<% 	          push = push + 1
+    	   end
+         end
+      end
+      if wager.team == 'Away'
+         if wager.game_line.game.away_score + (wager.game_line.home_spread * -1) < wager.game_line.game.home_score %>
+            <font color='Red'>Loser</font>
+<%          lost = lost + 1
+			cash = cash + (wager.amount * (wager.game_line.vig / 100.0))
+         else
+           if wager.game_line.game.away_score + (wager.game_line.home_spread * -1) > wager.game_line.game.home_score %>
+   	          <font color='Green'>Winner</font>
+<% 	          won = won + 1
+			  cash = cash + wager.amount
+           else %>
+   	          <font color='Blue'>Push</font>
+<% 	          push = push + 1
+    	   end
+         end
+      end
+    end %>
+    
+    </td>
+    <td align="center"><%= link_to 'Show', :action => 'show', :id => wager %></td>
+    <td align="center"><%= link_to 'Change', :action => 'edit', :id => wager %></td>
+    <td><a href="/wagers/<%=wager.id%>" data-confirm="Are you sure?" data-method="delete" rel="nofollow">Destroy</a>
+  </tr>
+<% end %>
+
+  <tr>
+    <th align="center">Season</th>
+    <th align="center">Week</th>
+    <th align="center">Away Team</th>
+    <th align="center">Away Score</th>
+    <th align="center">Home Team</th>
+    <th align="center">Home Score</th>
+    <th align="center">Sportsbook</th>
+    <th align="center">Spread</th>
+    <th align="center">O/U</th>
+    <th align="center">Vig</th>
+    <th align="center">Account</th>
+    <th colspan="6" align="center">Spreads: 
+    	<font color="green"><%=won%></font>-
+    	<font color="red"><%=lost%></font>-
+    	<font color="blue"><%=push%></font>&nbsp;&nbsp;&nbsp;
+    	$<%=cash%>
+    	<br>O/U: 
+    	<font color="green"><%=ouWon%></font>-
+    	<font color="red"><%=ouLost%></font>-
+    	<font color="blue"><%=ouPush%></font>&nbsp;&nbsp;&nbsp;
+    	$<%=ouCash%>
+    </th>
+  </tr>
+
+</table>
+</td>
+</tr>
+  <tr>
+  <td>
+<%= link_to 'Add New Wager', :action => 'new' %>
+<a href="javascript:history.back()">Back</a>
+</td>
+</tr>
+</table>

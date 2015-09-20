@@ -1,0 +1,9 @@
+<h1>Editing conference</h1>
+
+<%= form_tag :action => 'update', :id => @conference do %>
+  <%= render :partial => 'form' %>
+  <%= submit_tag 'Save changes' %>
+<% end %>
+
+<%= link_to 'Show', :action => 'show', :id => @conference %> |
+<a href="javascript:history.back()">Back</a>

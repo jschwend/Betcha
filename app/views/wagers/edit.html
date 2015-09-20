@@ -1,0 +1,9 @@
+<h1>Editing wager</h1>
+
+<%= form_tag :action => 'update', :id => @wager do %>
+  <%= render :partial => 'form' %>
+  <%= submit_tag 'Edit' %>
+<% end %>
+
+<%= link_to 'Show', :action => 'show', :id => @wager %> |
+<a href="javascript:history.back()">Back</a>
